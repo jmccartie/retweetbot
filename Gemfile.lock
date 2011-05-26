@@ -1,0 +1,24 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    eventmachine (0.12.10)
+    json (1.5.1)
+    mime-types (1.16)
+    oauth (0.4.4)
+    simple_oauth (0.1.5)
+    twitter-stream (0.1.13)
+      eventmachine (~> 0.12.8)
+      simple_oauth (~> 0.1.4)
+    twitter_oauth (0.4.3)
+      json (>= 1.1.9)
+      mime-types (>= 1.16)
+      oauth (>= 0.4.1)
+    yajl-ruby (0.8.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  twitter-stream
+  twitter_oauth
+  yajl-ruby
