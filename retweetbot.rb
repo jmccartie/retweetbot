@@ -22,8 +22,8 @@ module RetweetBot
       consumer_secret: ENV['CONSUMER_SECRET'],
       access_token: ENV['ACCESS_TOKEN'],
       access_token_secret: ENV['ACCESS_TOKEN_SECRET'],
-      filter: ENV['FILTER'].split(","),
-      follow: ENV['FOLLOW'].split(",")
+      filter: ENV['FILTER'] ? ENV['FILTER'].split(",") : "",
+      follow: ENV['FOLLOW'] ? ENV['FOLLOW'].split(",") : ""
     }
 
     def initialize
