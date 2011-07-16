@@ -37,7 +37,7 @@ module RetweetBot
 
       twitter_stream.each_item do |item|
         JSON_PARSER.parse(item) do |status|
-          if status.has_key?(:text) and status[:user][:screen_name] != CONFIG[:twitter_username] and CONFIG[:follow].include?(status[:user][:id])
+          if status.has_key?(:text) and status[:user][:screen_name] != CONFIG[:twitter_username] and CONFIG[:follow].include?(status[:user][:id].to_s)
             LOGGER.info "@#{status[:user][:name]}: #{status[:text]}"
             result = twitter_client.retweet(status[:id])
             LOGGER.warn "ERROR: #{result[:errors]}" if result.has_key?(:errors)
