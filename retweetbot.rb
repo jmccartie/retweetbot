@@ -15,18 +15,32 @@ module RetweetBot
 
   class App
 
+    CONFIG = {
+      twitter_username: ENV['TWITTER_USERNAME'],
+      twitter_password: ENV['TWITTER_PASSWORD'],
+      consumer_key: ENV['CONSUMER_KEY'],
+      consumer_secret: ENV['CONSUMER_SECRET'],
+      access_token: ENV['ACCESS_TOKEN'],
+      access_token_secret: ENV['ACCESS_TOKEN_SECRET'],
+      filter: ENV['FILTER'],
+      follow: ENV['FOLLOW']
+    }
+
     def initialize
       raise "Twitter oAuth not authorized." unless twitter_client.authorized?
     end
 
     def start
-      LOGGER.info "Listening to Twitter stream for #{config_data[:filter].join(', ')}."
+      welcome = "Listening to Twitter stream for #{CONFIG[:filter].join(', ')}."
+      welcome << " (but only from #{CONFIG[:follow].count} users)" unless CONFIG[:follow].nil?
+      LOGGER.info welcome
 
       twitter_stream.each_item do |item|
         JSON_PARSER.parse(item) do |status|
-          if status.has_key?(:text) and status[:user][:screen_name] != config_data[:twitter_username]
+          if status.has_key?(:text) and status[:user][:screen_name] != CONFIG[:twitter_username] and CONFIG[:follow].include?(status[:user][:id])
             LOGGER.info "@#{status[:user][:name]}: #{status[:text]}"
-            twitter_client.retweet(status[:id])
+            result = twitter_client.retweet(status[:id])
+            LOGGER.warn "ERROR: #{result[:errors]}" if result.has_key?(:errors)
           end
         end
       end
@@ -54,43 +68,30 @@ module RetweetBot
 
     def twitter_stream
       @twitter_stream ||= Twitter::JSONStream.connect(
-        :path => '/1/statuses/filter.json',
         :method  => 'POST',
         # :ssl => true, # Would be needed by OAuth
         # :oauth => twitter_stream_oauth, # Sadly, OAuth does not work on streaming API
-        :auth    => config_data[:twitter_username] + ":" + config_data[:twitter_password],
-        :filters => config_data[:filter]
+        :auth    => CONFIG[:twitter_username] + ":" + CONFIG[:twitter_password],
+        :filters => CONFIG[:filter]
       )
     end
 
     def twitter_client
       @twitter_client ||= TwitterOAuth::Client.new(
-        :consumer_key => config_data[:consumer_key],
-        :consumer_secret => config_data[:consumer_secret],
-        :token => config_data[:access_token],
-        :secret => config_data[:access_token_secret]
+        :consumer_key => CONFIG[:consumer_key],
+        :consumer_secret => CONFIG[:consumer_secret],
+        :token => CONFIG[:access_token],
+        :secret => CONFIG[:access_token_secret]
       )
     end
 
     def twitter_stream_oauth
       {
-        :consumer_key => config_data[:consumer_key],
-        :consumer_secret => config_data[:consumer_secret],
-        :access_key => config_data[:access_token],
-        :access_secret => config_data[:access_token_secret]
+        :consumer_key => CONFIG[:consumer_key],
+        :consumer_secret => CONFIG[:consumer_secret],
+        :access_key => CONFIG[:access_token],
+        :access_secret => CONFIG[:access_token_secret]
       }
-    end
-
-    def config_data
-      @config_data ||= read_config_file
-    end
-
-    def read_config_file
-      # config_dir  = File.expand_path("~/.retweetbot")
-      config_dir  = File.dirname(__FILE__)
-      config_path = File.join(config_dir, "config.json")
-      config_file = File.new(config_path)
-      JSON_PARSER.parse(config_file)
     end
 
   end # class RetweetBot
