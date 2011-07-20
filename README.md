@@ -12,12 +12,12 @@ Add the necessary ENV variables to your application's environment:
 
 * TWITTER_USERNAME (your twitter username that will be doing the retweeting)
 * TWITTER_PASSWORD (password for the above account)
-* CONSUMER_KEY (the consumer key for the app you made)
-* CONSUMER_SECRET (consumer secret for the above key)
-* ACCESS_TOKEN (token generated for your account to your app)
-* ACCESS_TOKEN_SECRET (token secret for the above token)
-* FILTER (what to look for [hashtags or keywords] ... ex: "#teamDigerati")
-* FOLLOW (comma separated list of the user id's to limit the search ... ex: "1,14,140")
+* TWITTER_CONSUMER_KEY (the consumer key for the app you made)
+* TWITTER_CONSUMER_SECRET (consumer secret for the above key)
+* TWITTER_ACCESS_TOKEN (token generated for your account to your app)
+* TWITTER_ACCESS_TOKEN_SECRET (token secret for the above token)
+* TWITTER_FILTER (what to look for [hashtags or keywords] ... ex: "#teamDigerati")
+* TWITTER_FOLLOW (comma separated list of the user id's to limit the search ... ex: "1,14,140")
 
 ## Development
 

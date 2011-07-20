@@ -18,12 +18,12 @@ module RetweetBot
     CONFIG = {
       twitter_username: ENV['TWITTER_USERNAME'],
       twitter_password: ENV['TWITTER_PASSWORD'],
-      consumer_key: ENV['CONSUMER_KEY'],
-      consumer_secret: ENV['CONSUMER_SECRET'],
-      access_token: ENV['ACCESS_TOKEN'],
-      access_token_secret: ENV['ACCESS_TOKEN_SECRET'],
-      filter: ENV['FILTER'] ? ENV['FILTER'].split(",") : "",
-      follow: ENV['FOLLOW'] ? ENV['FOLLOW'].split(",") : ""
+      consumer_key: ENV['TWITTER_CONSUMER_KEY'],
+      consumer_secret: ENV['TWITTER_CONSUMER_SECRET'],
+      access_token: ENV['TWITTER_ACCESS_TOKEN'],
+      access_token_secret: ENV['TWITTER_ACCESS_TOKEN_SECRET'],
+      filter: ENV['TWITTER_FILTER'] ? ENV['TWITTER_FILTER'].split(",") : "",
+      follow: ENV['TWITTER_FOLLOW'] ? ENV['TWITTER_FOLLOW'].split(",") : ""
     }
 
     def initialize
